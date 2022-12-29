@@ -108,6 +108,22 @@ async function run() {
       res.send(result)
     })
 
+    app.patch('/updateStory/:id', verifyJWT, async (req, res) => {
+      const id=req.params.id
+      const story = req.body;
+      const query = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          image: story.image,
+          title: story.title,
+          writer_story: story.writer_story
+
+        },
+      };
+      const result = await storiesCollection.updateOne(query, updatedDoc);
+      res.send(result)
+    })
+
   } finally {
   }
 }
