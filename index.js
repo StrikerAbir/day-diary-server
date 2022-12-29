@@ -92,9 +92,20 @@ async function run() {
 
     app.get('/stories', verifyJWT, async (req, res) => {
       const query = {}
-      const stories = await storiesCollection.find(query).toArray();
+      const stories = await storiesCollection
+        .find(query)
+        .sort({ post_time: -1 })
+        .toArray();
       // console.log(stories);
       res.send(stories);
+    })
+
+    app.delete('/stories', verifyJWT, async (req, res) => {
+      const id = req.query.id;
+      console.log(id);
+      const filter = { _id: ObjectId(id) };
+      const result = await storiesCollection.deleteOne(filter);
+      res.send(result)
     })
 
   } finally {
