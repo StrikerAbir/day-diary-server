@@ -91,12 +91,14 @@ async function run() {
     })
 
     app.get('/stories', verifyJWT, async (req, res) => {
-      const query = {}
+      const email=req.query.mail
+      const query = { writer_email :email};
       const stories = await storiesCollection
         .find(query)
         .sort({ post_time: -1 })
         .toArray();
       // console.log(stories);
+      console.log(email);
       res.send(stories);
     })
 
